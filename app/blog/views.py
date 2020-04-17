@@ -22,6 +22,11 @@ class PostListView(ListView):
     context_object_name = 'posts'
     ordering = ['-date_posted']
 
+    def get_queryset(self):
+        offset = int(self.request.GET.get('offset'))
+        limit = int(self.request.GET.get('limit'))
+        return Post.objects.filter(is_deleted=False)[offset:offset + limit]
+
 
 class PostDetailView(DetailView):
     model = Post
